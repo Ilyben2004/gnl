@@ -1,28 +1,42 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibennaje <ibennaje@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/28 13:42:13 by ibennaje          #+#    #+#             */
+/*   Updated: 2024/12/28 15:25:16 by ibennaje         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
-void	*helper_func(char *buffer, char **reminder, int *read_values, int fd)
-{
-	if (BUFFER_SIZE <= 0 || fd < 0)
+void	*helper_func(char **reminder, t_read_values *rdvals, int f)
+{	
+	char *buff;
+
+	if (BUFFER_SIZE <= 0 || f < 0 )
 		return (NULL);
-	if (!buffer)
+	buff = ft_calloc((size_t) BUFFER_SIZE + 1 , 1);
+	if (!buff)
 		return (NULL);
 	if (*reminder)
-	{
-		if ((*reminder)[0] != 0)
-		{
-			read_values[1] = ft_strlcpy(buffer, (*reminder));
+	{		if (read(f , buff, 0) == -1)
+				return (NULL);
+			rdvals->read_count = ft_strcpy(buff, (*reminder));
 			free(*reminder);
 			*reminder = NULL;
-		}
+
 	}
 	else
 	{
-		read_values[0] = read(fd, buffer, BUFFER_SIZE);
-		if (read_values[0] <= 0)
-			return (free(buffer), NULL);
-		read_values[1] = read_values[0];
+		rdvals->read_return = read(f, buff, BUFFER_SIZE);
+		if (rdvals->read_return <= 0)
+			return (free(buff), NULL);
+		rdvals->read_count = rdvals->read_return;
 	}
-	return ("valid");
+	return (buff);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
@@ -44,21 +58,23 @@ char	*get_next_line(int fd)
 	static char	*reminder;
 	char		*buffer;
 	int			i;
-	int			read_values[2];
-
-	read_values[1] = 0;
+	t_read_values	rdvals;
+	
+	rdvals.read_count = 0;
 	i = 2;
-	buffer = ft_calloc(BUFFER_SIZE + 1, 1);
-	if (!helper_func(buffer, &reminder, read_values, fd))
+	buffer = helper_func(&reminder,&rdvals,fd);
+	if (!buffer)
 		return (NULL);
-	while (!ft_strchr(buffer, '\n') && read_values[1] > 0)
+	while (!ft_strchr(buffer, '\n') && rdvals.read_count > 0)
 	{
 		if (!make_it_bigger(&buffer, i++))
 			return (free(buffer), NULL);
-		read_values[0] = read(fd, buffer + read_values[1], BUFFER_SIZE);
-		if (read_values[0] <= 0)
+		rdvals.read_return = read(fd, buffer + rdvals.read_count, BUFFER_SIZE);
+		if (rdvals.read_return == 0)
 			break ;
-		read_values[1] += read_values[0];
+		else if (rdvals.read_return == -1)
+			return (free(buffer),NULL) ;
+		rdvals.read_count += rdvals.read_return;
 	}
 	if (!*buffer)
 		return (free(buffer), NULL);

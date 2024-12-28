@@ -1,11 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ibennaje <ibennaje@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/28 13:42:17 by ibennaje          #+#    #+#             */
+/*   Updated: 2024/12/28 14:36:18 by ibennaje         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*extract_new_line(char *buffer, char **reminder)
 {
-	char	*new_line_address;
-	char	*extracted_line;
-	int		i;
-	int		new_line_size;
+	char		*new_line_address;
+	char		*extracted_line;
+	size_t		i;
+	size_t		new_line_size;
 
 	i = -1;
 	new_line_address = ft_strchr(buffer, '\n');
@@ -32,7 +44,7 @@ void	*make_it_bigger(char **buffer, int i)
 	int		j;
 
 	j = -1;
-	buffer_bigger = ft_calloc(BUFFER_SIZE * i + 1, 1);
+	buffer_bigger = ft_calloc((size_t)BUFFER_SIZE * i + 1, 1);
 	if (!buffer_bigger)
 		return (NULL);
 	while ((*buffer)[++j])
@@ -55,7 +67,7 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-int	ft_strlcpy(char *dst, const char *src)
+int	ft_strcpy(char *dst, const char *src)
 {
 	int	i;
 
@@ -73,9 +85,9 @@ int	ft_strlcpy(char *dst, const char *src)
 
 char	*ft_strdup(char *src)
 {
-	int i;
-	int len;
-	char *str;
+	int		i;
+	int		len;
+	char	*str;
 
 	len = 0;
 	while (src[len])
