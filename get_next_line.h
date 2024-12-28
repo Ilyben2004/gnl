@@ -25,16 +25,16 @@
 
 typedef struct s_read_struct
 {
-	ssize_t	read_return;
+	ssize_t read_return ;
 	size_t	read_count;
-}	t_read_values;
+}			t_read_values;
 
-char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
-char	*extract_new_line(char *buffer, char **reminder);
-void	*make_it_bigger(char **buffer, int i);
-int		ft_strcpy(char *dst, const char *src);
-void	*ft_calloc(size_t nmemb, size_t size);
-char	*ft_strdup(char *src);
-void	*helper_func(char **reminder, t_read_values *rdvals, int f);
+char		*get_next_line(int fd);
+char		*ft_strchr(const char *s, int c);
+char		*extract_new_line(char *buffer, char **reminder);
+void		*make_it_bigger(char **buffer, int i);
+int			ft_strcpy(char *dst, const char *src);
+void		*ft_calloc(size_t nmemb, size_t size);
+char		*ft_strdup(char *src);
+void		*helper_func(char **reminder, t_read_values *rdvals, int f);
 #endif

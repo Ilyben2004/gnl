@@ -13,28 +13,28 @@
 #include "get_next_line.h"
 
 void	*helper_func(char **reminder, t_read_values *rdvals, int f)
-{	
-	char *buff;
+{
+	char	*buff;
 
-	if (BUFFER_SIZE <= 0 || f < 0 )
+	if (BUFFER_SIZE <= 0 || f < 0)
 		return (NULL);
-	buff = ft_calloc((size_t) BUFFER_SIZE + 1 , 1);
+	buff = ft_calloc((size_t)BUFFER_SIZE + 1, 1);
 	if (!buff)
 		return (NULL);
 	if (*reminder)
-	{		if (read(f , buff, 0) == -1)
-				return (NULL);
-			rdvals->read_count = ft_strcpy(buff, (*reminder));
-			free(*reminder);
-			*reminder = NULL;
-
+	{
+		if (read(f, buff, 0) == -1)
+			return (NULL);
+		rdvals->read_count = ft_strcpy(buff, (*reminder));
+		free(*reminder);
+		*reminder = NULL;
 	}
 	else
 	{
-		rdvals->read_return = read(f, buff, BUFFER_SIZE);
+		rdvals->read_return (= read(f, buff, BUFFER_SIZE));
 		if (rdvals->read_return <= 0)
 			return (free(buff), NULL);
-		rdvals->read_count = rdvals->read_return;
+		rdvals->read_count = rdvals->read_return ;
 	}
 	return (buff);
 }
@@ -55,26 +55,27 @@ void	*ft_calloc(size_t nmemb, size_t size)
 
 char	*get_next_line(int fd)
 {
-	static char	*reminder;
-	char		*buffer;
-	int			i;
+	static char		*reminder;
+	char			*buffer;
+	int				i;
 	t_read_values	rdvals;
-	
+
 	rdvals.read_count = 0;
 	i = 2;
-	buffer = helper_func(&reminder,&rdvals,fd);
+	buffer = helper_func(&reminder, &rdvals, fd);
 	if (!buffer)
 		return (NULL);
 	while (!ft_strchr(buffer, '\n') && rdvals.read_count > 0)
 	{
 		if (!make_it_bigger(&buffer, i++))
 			return (free(buffer), NULL);
-		rdvals.read_return = read(fd, buffer + rdvals.read_count, BUFFER_SIZE);
+		rdvals.read_return (= read(fd, buffer + rdvals.read_count,
+				BUFFER_SIZE));
 		if (rdvals.read_return == 0)
 			break ;
 		else if (rdvals.read_return == -1)
-			return (free(buffer),NULL) ;
-		rdvals.read_count += rdvals.read_return;
+			return (free(buffer), NULL);
+		rdvals.read_count += rdvals.read_return ;
 	}
 	if (!*buffer)
 		return (free(buffer), NULL);

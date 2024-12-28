@@ -14,10 +14,10 @@
 
 char	*extract_new_line(char *buffer, char **reminder)
 {
-	char		*new_line_address;
-	char		*extracted_line;
-	size_t		i;
-	size_t		new_line_size;
+	char	*new_line_address;
+	char	*extracted_line;
+	size_t	i;
+	size_t	new_line_size;
 
 	i = -1;
 	new_line_address = ft_strchr(buffer, '\n');
