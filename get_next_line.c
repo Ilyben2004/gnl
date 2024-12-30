@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ibennaje <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ibennaje <ibennaje@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/29 19:49:37 by ibennaje          #+#    #+#             */
-/*   Updated: 2024/12/29 19:49:42 by ibennaje         ###   ########.fr       */
+/*   Updated: 2024/12/30 09:42:50 by ibennaje         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ char	*buffercreate(int fd, char *reminder)
 			return (free(readbuffer), NULL);
 		readbuffer[read_ret] = '\0';
 		buffer = ft_strjoin(reminder, readbuffer);
+		if (!buffer)
+			return (free(readbuffer), NULL);
 		free(reminder);
 		reminder = buffer;
 		if (read_ret == 0 || ft_strchr(buffer, '\n'))
